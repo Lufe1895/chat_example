@@ -1,12 +1,34 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { newUser } from '../auth/auth';
+import UserContext from '../context/UserContext';
+import { v4 as uuidv4 } from 'uuid';
 
-export const Login = () => {
-
+export const Login = ({ history }) => {
     const [userName, setUserName] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
+    const { setUser } = useContext(UserContext);
 
     const handleSubtmit = (e) => {
         e.preventDefault();
-        console.log(userName);
+        if(userName < 4) {
+            setErrorMsg('El usuario debe tener al menos 5 caracteres.')
+        } else {
+            const user = {
+                uuid: uuidv4(),
+                user: userName,
+                chats: []
+            }
+
+            newUser(user).then(() => {
+                setUser(user);
+                history.push("/chat");
+            }).catch((e) => {
+                console.log(e);
+            });
+            
+            
+        }
+        
     }
 
     const handleInputChange = (e) => {
@@ -32,6 +54,7 @@ export const Login = () => {
                                 onChange={ handleInputChange }
                         />
                     </p>
+                    { errorMsg && <p className="lead offset-lg-4 fst-italic">{ errorMsg }</p> }
 
                     <p className="lead">
                         <input 

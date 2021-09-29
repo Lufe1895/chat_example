@@ -1,1 +1,24 @@
-@import './components/login';
+.fullscreen {
+    height: 100vh;
+}
+
+.right-divider {
+    border-right: 1px inset #333333;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.bg-lighter {
+    background-color: #404040;
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0px;
+    margin-left: 0px;
+    width: 68vw;
+}
+
+.nav {
+    position: fixed;
+}
