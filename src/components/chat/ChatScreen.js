@@ -1,38 +1,38 @@
-import React, { useEffect, useState } from 'react'
-import { useContext } from 'react/cjs/react.development';
-import UserContext from '../../context/UserContext';
-import { getChats } from '../../auth/chat';
+import React, { useEffect } from 'react'
+// import UserContext from '../../context/UserContext';
 import { Input } from './Input'
 import { Navbar } from './Navbar'
 import { Connected } from './Connected';
+import { useState } from 'react/cjs/react.development';
+import { getChats } from '../../auth/chat';
+import { Chat } from './Chat';
 
 export const ChatScreen = ({ history }) => {
-    const { user } = useContext(UserContext);
     const [chats, setChats] = useState([]);
 
     useEffect(() => {
-        getChats().then(res => {
-            const { docs } = res;
-            setChats(docs);
-        }).catch(err => {
-            console.log(err)
-        })
-    }, [user]);
-
+        // setChats(getChats());
+        getChats((data) => {
+            setChats(data);
+            // console.log(data);
+        });
+    }, [])
+    
     const handleSend = () => {
         console.log(chats);
     }
 
     return (
         <>
-            <Navbar history={ history } userName={ user.user } />
+            <Navbar history={ history } />
 
-            <div className="row bg-lighter text-light fullscreen">
-                <div className="col-4 fullscreen mt-5 pt-3 right-divider">
-                    <Connected users={ chats } />
+            <div className="row bg-lighter bg-gradient text-light fullscreen">
+                <div className="col-3 fullscreen right-divider">
+                    <Connected chats={ chats } />
                 </div>
 
-                <div className="col-8 fullscreen right-divider">
+                <div className="col-9 fullscreen right-divider" >
+                    <Chat />
                     <Input handleSend={ handleSend } />
                 </div>
             </div>

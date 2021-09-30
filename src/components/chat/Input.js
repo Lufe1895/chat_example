@@ -3,6 +3,7 @@ import React from 'react'
 export const Input = ({ handleSend }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
+        
     }
 
     return (

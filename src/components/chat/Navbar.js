@@ -1,14 +1,21 @@
-import React from 'react'
+import { useContext } from 'react';
+import { deletUser } from '../../auth/auth';
+import UserContext from '../../context/UserContext';
 
-export const Navbar = ({ history, userName }) => {
+export const Navbar = ({ history }) => {
+    const { user } = useContext(UserContext);
     const handleLogout = () => {
-        history.push("/");
+        deletUser(user.uuid).then(res => {
+            history.push("/");
+        }).catch(e => {
+            console.log(e);
+        });
     }
 
     return (
-        <nav className="navbar navbar-expand navbar-dark bg-dark fixed-top" aria-label="Second navbar example">
+        <nav className="navbar navbar-expand navbar-dark bg-dark" aria-label="Second navbar example">
             <div className="container-fluid">
-                <h5 className="navbar-brand" >Bienvenido al Chat, { userName }</h5>
+                <h5 className="navbar-brand" >Bienvenido al chat, { user.user }</h5>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>

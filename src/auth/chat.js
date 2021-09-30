@@ -1,10 +1,14 @@
-import { collection, getDocs, setDoc } from "@firebase/firestore"
+import { collection, doc, onSnapshot, setDoc } from "@firebase/firestore"
 import { db } from "../firebase/firebase-config";
 
-export const getChats = () => {
-    return getDocs(collection(db, `usuarios`));
+export const getChats = (callback) => {
+    onSnapshot(collection(db, `usuarios`), (snapshot) => {
+        callback(snapshot.docs);
+    }, (err) => {
+        return err;
+    });
 }
 
-export const setMessage = ({ user, destiny, msgs, newMsg }) => {
-    return setDoc(collection(db, `usuarios`, { user, destiny, msgs: [msgs, newMsg] }));
+export const setMessage = ({user, newMsg, chats, destiny}) => {
+    return setDoc(doc(db, `usuarios/${ user.uuid }`, { ...user, chats: [chats, { msg: newMsg, destiny }]}));
 }

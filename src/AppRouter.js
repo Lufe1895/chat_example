@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
@@ -12,14 +12,19 @@ export const AppRouter = () => {
     const [user, setUser] = useState();
     const value = { user, setUser };
 
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        setUser(JSON.parse(user));
+    }, [])
+
     return (
-        <Router>
-            <Switch>
-                <UserContext.Provider value={ value }>
+        <UserContext.Provider value={ value }>
+            <Router>
+                <Switch>
                     <Route exact path="/" component={ Login } />
                     <Route exact path="/chat" component={ ChatScreen } />
-                </UserContext.Provider>
-            </Switch>
-        </Router>
+                </Switch>
+            </Router>
+        </UserContext.Provider>
     )
 }

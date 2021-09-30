@@ -8,25 +8,25 @@ export const Login = ({ history }) => {
     const [errorMsg, setErrorMsg] = useState('');
     const { setUser } = useContext(UserContext);
 
+    const user = {
+        uuid: uuidv4(),
+        user: userName,
+        chats: []
+    }
+
     const handleSubtmit = (e) => {
         e.preventDefault();
         if(userName < 4) {
             setErrorMsg('El usuario debe tener al menos 5 caracteres.')
         } else {
-            const user = {
-                uuid: uuidv4(),
-                user: userName,
-                chats: []
-            }
-
             newUser(user).then(() => {
                 setUser(user);
+                localStorage.setItem('user', JSON.stringify(user));
                 history.push("/chat");
             }).catch((e) => {
                 console.log(e);
             });
-            
-            
+            setErrorMsg('');
         }
         
     }
